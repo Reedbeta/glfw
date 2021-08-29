@@ -1092,6 +1092,10 @@ int _glfwPlatformInit(void)
         _glfw_dlsym(_glfw.wl.client.handle, "wl_proxy_get_user_data");
     _glfw.wl.client.proxy_set_user_data = (PFN_wl_proxy_set_user_data)
         _glfw_dlsym(_glfw.wl.client.handle, "wl_proxy_set_user_data");
+    _glfw.wl.client.proxy_get_version = (PFN_wl_proxy_get_version)
+        _glfw_dlsym(_glfw.wl.client.handle, "wl_proxy_get_version");
+    _glfw.wl.client.proxy_marshal_flags = (PFN_wl_proxy_marshal_flags)
+        _glfw_dlsym(_glfw.wl.client.handle, "wl_proxy_marshal_flags");
 
     if (!_glfw.wl.client.display_flush ||
         !_glfw.wl.client.display_cancel_read ||
@@ -1269,7 +1273,7 @@ int _glfwPlatformInit(void)
             wl_data_device_manager_get_data_device(_glfw.wl.dataDeviceManager,
                                                    _glfw.wl.seat);
         wl_data_device_add_listener(_glfw.wl.dataDevice, &dataDeviceListener, NULL);
-        _glfw.wl.clipboardString = malloc(4096);
+        _glfw.wl.clipboardString = _glfw_calloc(4096, 1);
         if (!_glfw.wl.clipboardString)
         {
             _glfwInputError(GLFW_PLATFORM_ERROR,
@@ -1365,9 +1369,9 @@ void _glfwPlatformTerminate(void)
         close(_glfw.wl.cursorTimerfd);
 
     if (_glfw.wl.clipboardString)
-        free(_glfw.wl.clipboardString);
+        _glfw_free(_glfw.wl.clipboardString);
     if (_glfw.wl.clipboardSendString)
-        free(_glfw.wl.clipboardSendString);
+        _glfw_free(_glfw.wl.clipboardSendString);
 }
 
 const char* _glfwPlatformGetVersionString(void)

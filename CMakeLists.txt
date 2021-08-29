@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1...3.17 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.4...3.20 FATAL_ERROR)
 
 project(GLFW VERSION 3.4.0 LANGUAGES C)
 
@@ -256,10 +256,10 @@ endif()
 # Export GLFW library dependencies
 #--------------------------------------------------------------------
 foreach(arg ${glfw_PKG_DEPS})
-    set(deps "${deps} ${arg}")
+    string(APPEND deps " ${arg}")
 endforeach()
 foreach(arg ${glfw_PKG_LIBS})
-    set(libs "${libs} ${arg}")
+    string(APPEND libs " ${arg}")
 endforeach()
 
 set(GLFW_PKG_CONFIG_REQUIRES_PRIVATE "${deps}" CACHE INTERNAL
